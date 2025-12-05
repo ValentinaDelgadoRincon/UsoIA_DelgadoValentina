@@ -1,66 +1,72 @@
-function obtener() {
-    const contenedor = document.getElementById("caja");
-    fetch(linkAPI)
-        .then(response => response.json())
-        .then(personajes => {
+let personajesGlobales = [];
+const API = "https://rickandmortyapi.com/api/character";
 
-            personajes = personajes.results;
+async function cargarPersonajes() {
+    try {
+        const respuesta = await fetch(API);
+        const data = await respuesta.json();
+        personajesGlobales = data.results;
 
-            setTimeout(() => {
-                contenedor.textContent = "";
 
-                personajes.forEach(personaje => {
-                    const tarjeta = document.createElement("div");
-                    tarjeta.className = "tarjeta";
-                    const img = document.createElement("img");
-                    img.src = personaje.image;
-                    const h2 = document.createElement("h2");
-                    h2.textContent = personaje.name;
-                    const estado = document.createElement("p");
-                    estado.textContent = "Estado: " + personaje.status;
-
-                    tarjeta.append(img, h2, estado);
-                    contenedor.appendChild(tarjeta);
-                });
-            }, 2000);
-        });
-};
-
-function filtrar() {
-    const contenedor = document.getElementById("caja");
-    contenedor.textContent = "Cargando...";
-    const filtro = document.getElementById("buscador").value;
-    let linkAPIFiltrado = linkAPI + `?name=${filtro}`;
-
-    fetch(linkAPIFiltrado)
-        .then(response => response.json())
-        .then(personajes => {
-
-            personajes = personajes.results;
-
-            setTimeout(() => {
-                contenedor.textContent = "";
-
-                personajes.forEach(personaje => {
-                    const tarjeta = document.createElement("div");
-                    tarjeta.className = "tarjeta";
-                    const img = document.createElement("img");
-                    img.src = personaje.image;
-                    const h2 = document.createElement("h2");
-                    h2.textContent = personaje.name;
-                    const estado = document.createElement("p");
-                    estado.textContent = "Estado: " + personaje.status;
-
-                    tarjeta.append(img, h2, estado);
-                    contenedor.appendChild(tarjeta);
-                });
-            }, 2000);
-        });
+        mostrarPersonajes(personajesGlobales);
+    } catch (error) {
+        console.error('Error al cargar personajes:', error);
+    }
 }
 
-const linkAPI = "https://rickandmortyapi.com/api/character";
-obtener();
-document.addEventListener("DOMContentLoaded", () => {
-    const button = document.getElementsByClassName("oprimir")[0];
-    button.addEventListener("click", filtrar);
+function mostrarPersonajes(personajes) {
+    const contenedor = document.getElementById('caja');
+    if (!contenedor) return;
+    contenedor.innerHTML = '';
+
+    personajes.forEach(personaje => {
+        const tarjeta = document.createElement('div');
+        tarjeta.classList.add('tarjeta');
+
+        const imageDiv = document.createElement('div');
+        imageDiv.classList.add('image');
+
+        const img = document.createElement('img');
+        img.src = personaje.image;
+        img.alt = personaje.name;
+
+        imageDiv.appendChild(img);
+
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('content');
+
+        const nombre = document.createElement('h2');
+        nombre.textContent = personaje.name;
+
+        const estado = document.createElement('p');
+        estado.textContent = "Estado: " + personaje.status;
+
+        contentDiv.appendChild(nombre);
+        contentDiv.appendChild(estado);
+
+        tarjeta.appendChild(imageDiv);
+        tarjeta.appendChild(contentDiv);
+
+        contenedor.appendChild(tarjeta);
+    });
+}
+
+function filtrarPersonajes(texto) {
+    const textoLower = texto.toLowerCase();
+    const filtrados = personajesGlobales.filter(personaje => personaje.name.toLowerCase().includes(textoLower));
+    mostrarPersonajes(filtrados);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    cargarPersonajes();
+
+    document.querySelector('.oprimir')?.addEventListener('click', () => {
+        const filtro = document.getElementById('buscador').value;
+        filtrarPersonajes(filtro);
+    });
+
+    document.getElementById('buscador')?.addEventListener('input', (e) => {
+        filtrarPersonajes(e.target.value);
+    });
 });

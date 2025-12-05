@@ -26,6 +26,7 @@ h1 {
     gap: 20px;
     flex-wrap: wrap;
     padding: 20px;
+  
 }
 
 
@@ -59,25 +60,37 @@ img {
     margin-bottom: 20px;
     margin-top: 0px;
     border-radius: 5px;
+    display: block;
+    margin-left: 10px;
+    margin-right: 10px;
 }
+
 
 
 .tarjeta {
-    height: 280px;
-    max-width: 180px;
-    flex-wrap: wrap;
+    height: 230px;
+    max-width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: solid rgb(63, 60, 60);
 }
+
 
 
 h2 {
     font-size: 100%;
     text-align: center;
-
+    color: white;
 }
+
 
 p {
     color: white;
     font-weight: lighter;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
+    text-align: center;
 }
