@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tareas</title>
+    <link rel="stylesheet" href="../Dia2/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Mi Lista de Tareas</h1>
+
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Añadir nueva tarea...">
+            <button onclick="addTask()">Agregar</button>
+        </div>
+
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Buscar tareas..." onkeyup="searchTasks()">
+        </div>
+
+        <ul id="taskList">
+            </ul>
+    </div>
+
+    <script src="../Dia2/script.js"></script>
+</body>
+</html>
